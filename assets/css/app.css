@@ -1,0 +1,74 @@
+#titulo_inicio {
+    background-color: black;
+    color: white;
+}
+#titulo_formualrio {
+    background-color: black;
+    color: white;
+}
+#btn-Guardar {
+    background-color: black;
+    color: white;
+}
+#btn-Cancelar {
+    background-color: black;
+    color: white;
+}
+#titulo_tabla {
+    background-color: black;
+    color: white;
+}
+#titulo_bienvenido {
+    background-color: black;
+    color: white;
+}
+footer {
+    background-color: black;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.footer-section {
+    flex: 1;
+    padding: 0 20px;
+}
+.footer-section h2 {
+    color: #fff;
+}
+#imagen1Carusel {
+    margin: 0 auto;
+}
+#imagen2Carusel {
+    margin: 0 auto;
+}
+#imagen3Carusel {
+    margin: 0 auto;
+}
+.carousel-control-prev-icon {
+    background-color: black;
+    color: white;
+}
+.carousel-control-next-icon {
+    background-color: black;
+    color: white;
+}
+#div_tabla {
+    margin: 0 auto;
+    margin-bottom: 14rem;
+}
+#tr_tabla {
+    background-color: black;
+    color: white;
+}
+#div_formulario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 7rem;
+}
