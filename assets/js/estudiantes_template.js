@@ -1,8 +1,3 @@
-/**
- * Función encargada de generar los td de la tabla donde se listarán los estudiantes
- * @param  {Object} estudiantes Objeto con los datos de los estudiantes
- * @return {String} Html generado
-*/
 async function template_estudiantes(estudiantes) {
   let html = ``;
   if (estudiantes && estudiantes.length > 0) {
@@ -16,12 +11,28 @@ async function template_estudiantes(estudiantes) {
           <td>${estudiante.Nombre_Ciudad}</td>
           <td>${estudiante.Nombre_Departamento}</td>
           <td>${estudiante.Edad}</td>
-          <td><a id="btn-Consultar" onclick="consultar_estudiante(${estudiante.id})" class='btn btn-dark' data-bs-toggle='modal' data-bs-target='#updateModal'><i class="fa fa-edit text-white" title="ver/editar" style="font-size: 1rem;"></i></a> <a id="btn-Confirmar-Eliminar" onclick="confirmar_eliminar_estudiante(${estudiante.id},'${estudiante.Nombre_Completo}')" class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#deleteModal'><i class="fa fa-trash" title="Eliminar" style="font-size: 1rem;"></i></a></td>
+          <td>
+            <a class="btn-consultar btn btn-dark" data-id="${estudiante.id}" data-bs-toggle='modal' data-bs-target='#updateModal'><i class="fa fa-edit text-white" title="ver/editar" style="font-size: 1rem;"></i></a>
+            <a class="btn-confirmar-eliminar btn btn-danger" data-id="${estudiante.id}" data-nombre="${estudiante.Nombre_Completo}" data-bs-toggle='modal' data-bs-target='#deleteModal'><i class="fa fa-trash" title="Eliminar" style="font-size: 1rem;"></i></a>
+          </td>
         </tr>
       `;
     });
     $(`#tbl-Estudiante`).html(html);
-  }
-  else
+  } else {
     $(`#tbl-Estudiante`).html(`<tr><td colspan="7">No se encontraron estudiantes.</td></tr>`);
+  }
 }
+
+// Delegar eventos a los botones generados dinámicamente
+$(document).on(`click`, `.btn-consultar`, async function() {
+  const id_estudiante = $(this).data(`id`);
+  let datos = await consultar_estudiante(id_estudiante);
+  await asignar_valores(datos);
+});
+
+$(document).on(`click`, `.btn-confirmar-eliminar`, async function() {
+  const id_estudiante = $(this).data(`id`);
+  const nombre_estudiante = $(this).data(`nombre`);
+  await confirmar_eliminar_estudiante(id_estudiante, nombre_estudiante);
+});

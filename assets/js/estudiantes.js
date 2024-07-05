@@ -1,19 +1,25 @@
 //Objeto principal
-let est            = {};
-est.identificacion = $(`#txtIdentificacion`);
-est.nombre         = $(`#txtNombreC`);
-est.fecha_nace     = $(`#txtFechaNacimiento`);
-est.ciudad         = $(`#txtCiudadN`);
-est.departamento   = $(`#txtDepartamentoN`);
-est.edad           = $(`#txtEdad`);
+  let est            = {};
+// Datos Generales
+  est.identificacion = $(`#txtIdentificacion`);
+  est.nombre         = $(`#txtNombreC`);
+  est.fecha_nace     = $(`#txtFechaNacimiento`);
+  est.ciudad         = $(`#txtCiudadN`);
+  est.departamento   = $(`#txtDepartamentoN`);
+  est.edad           = $(`#txtEdad`);
+// Datos Actualizar
+  est.identificacion_editar = $(`#txtIndentificacionEditar`);
+  est.nombre_editar         = $(`#txtNombreEditar`);
+  est.fecha_nace_editar     = $(`#txtFechaNacimientoEditar`);
+  est.ciudad_editar         = $(`#txtCiudadNEditar`);
+  est.departamento_editar   = $(`#txtDepartamentoNEditar`);
+  est.edad_editar           = $(`#txtEdadEditar`);
 //Botones
   est.btn_guardar            = $(`#btn-Guardar`);
   est.btn_cancelar           = $(`#btn-Cancelar`);
   est.btn_actualizar         = $(`#btn-Actualizar`);
-  est.btn_confirmar_eliminar = $(`#btn-Confirmar-Eliminar`);
-  est.btn_consultar          = $(`#btn-Consultar`);
   est.btn_eliminar           = $(`#btn-Eliminar`);
-  // Eventos
+// Eventos
   est.btn_guardar.click(async function() {
     await validar_campos();
   });
@@ -22,13 +28,6 @@ est.edad           = $(`#txtEdad`);
   });
   est.btn_actualizar.click(async function() {
     await actualizar_estudiante();
-  });
-  est.btn_confirmar_eliminar.click(async function() {
-    await confirmar_eliminar_estudiante();
-  });
-  est.btn_consultar.click(async function(){
-    const id_estudiante = localStorage.getItem(`id`);
-    await consultar_estudiante(id_estudiante);
   });
   est.btn_eliminar.click(async function(){
     const id_estudiante = localStorage.getItem(`id`);
@@ -115,4 +114,12 @@ est.edad           = $(`#txtEdad`);
   async function confirmar_eliminar_estudiante(id, nombre_estudiante) {
     document.getElementById(`mensajeEliminar`).innerHTML = `¿Seguro de eliminar al estudiante? ${nombre_estudiante}`;
     localStorage.id = id;
+  }
+  async function asignar_valores(datos) {
+    est.identificacion_editar.val(datos[0].Identificacion);
+    est.nombre_editar.val(datos[0].Nombre_Completo)
+    est.fecha_nace_editar.val(datos[0].Fecha_Nacimiento)
+    est.ciudad_editar.val(datos[0].Ciudad_Nacimiento)
+    est.departamento_editar.val(datos[0].Departamento_Nacimiento)
+    est.edad_editar.val(datos[0].Edad)
   }

@@ -31,25 +31,53 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form id="frm_estudiantes_editar" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                             <label for="" class="">Edición de información del estudiante:</label><br>
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="txtNombreEditar" placeholder="Digite el producto">
-                                <label for="txtNombreEditar">Nombre Producto</label>
+                                <input type="number" class="form-control" id="txtIndentificacionEditar" placeholder="Digite la identificación del estudiante">
+                                <label for="txtIndentificacionEditar">Identificación del estudiante</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="number" class="form-control" id="txtPrecioEditar" placeholder="Digite el precio">
-                                <label for="txtPrecioEditar">Precio Producto</label>
+                                <input type="text" class="form-control" id="txtNombreEditar" placeholder="Digite el nombre del estudiante">
+                                <label for="txtNombreEditar">Nombre del estudiante</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="number" class="form-control" id="txtCantidadEditar" placeholder="Digite el Cantidad">
-                                <label for="txtCantidadEditar">Cantidad</label>
+                                <input type="date" class="form-control" id="txtFechaNacimientoEditar" placeholder="Digite la fecha de nacimiento">
+                                <label for="txtFechaNacimientoEditar">Fecha de Nacimiento</label>
                             </div>
-                            <div class="form-group row mt-2 ">
-                                <div class="mb-3 col-lg-12">
-                                    <label for="txtDescripcionEditar" class="fw-bold">Descripcion:</label>
-                                    <textarea name="txtDescripcionEditar" id="txtDescripcionEditar" class="form-control" cols="30" rows="5"></textarea>
-                                </div>
+                            <div class="form-floating mb-3">
+                                    <label for="txtCiudadNEditar">Ciudad Nacimiento:</label>
+                                    <select name="txtCiudadNEditar" id="txtCiudadNEditar" class="form-control" required>
+                                        <option value="" disabled selected>Seleccione una ciudad</option>
+                                        <?php
+                                          //Inclución del modelo
+                                            include_once '../model/estudiante_model.class.php';
+                                          //Instancia de la clase
+                                            $estudiante = new Modelo\Estudiante();
+                                            $ciudades   = $estudiante->obtenerCiudades();
+                                            foreach ($ciudades as $ciudad)
+                                              echo "<option value='{$ciudad['id']}'>{$ciudad['Nombre_Ciudad']}</option>";
+                                        ?>
+                                    </select>
+                            </div>
+                            <div class="form-floating mb-3">
+                              <label for="txtDepartamentoNEditar">Departamento Nacimiento:</label>
+                              <select name="txtDepartamentoNEditar" id="txtDepartamentoNEditar" class="form-control" required>
+                                 <option value="" disabled selected>Seleccione un departamento</option>
+                                 <?php
+                                     //Inclución del modelo
+                                       include_once '../model/estudiante_model.class.php';
+                                     //Instancia de la clase
+                                       $estudiante = new Modelo\Estudiante();
+                                       $ciudades   = $estudiante->obtenerDepartamentos();
+                                       foreach ($ciudades as $ciudad)
+                                         echo "<option value='{$ciudad['id']}'>{$ciudad['Nombre_Departamento']}</option>";
+                                 ?>
+                              </select>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control" id="txtEdadEditar" placeholder="Digite el nombre del estudiante">
+                                <label for="txtEdadEditar">Edad</label>
                             </div>
                         </form>
                     </div>
