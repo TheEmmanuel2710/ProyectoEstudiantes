@@ -12,9 +12,6 @@
         <li class="nav-item">
           <a class="nav-link active fw-bold" aria-current="page" href="frmAgregarEstudiante.php">Agregar Estudiante</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active fw-bold" aria-current="page" href="listaEstudiantes.php">Lista Estudiantes</a>
-        </li>
       </ul>
     </div>
   </div>

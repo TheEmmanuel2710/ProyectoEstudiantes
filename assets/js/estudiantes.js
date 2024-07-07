@@ -1,5 +1,5 @@
 //Objeto principal
-  let est            = {};
+  let est = {};
 // Datos Generales
   est.identificacion = $(`#txtIdentificacion`);
   est.nombre         = $(`#txtNombreC`);
@@ -14,11 +14,10 @@
   est.ciudad_editar         = $(`#txtCiudadNEditar`);
   est.departamento_editar   = $(`#txtDepartamentoNEditar`);
   est.edad_editar           = $(`#txtEdadEditar`);
-//Botones
-  est.btn_guardar            = $(`#btn-Guardar`);
-  est.btn_cancelar           = $(`#btn-Cancelar`);
-  est.btn_actualizar         = $(`#btn-Actualizar`);
-  est.btn_eliminar           = $(`#btn-Eliminar`);
+// Botones
+  est.btn_guardar    = $(`#btn-Guardar`);
+  est.btn_cancelar   = $(`#btn-Cancelar`);
+  est.btn_actualizar = $(`#btn-Actualizar`);
 // Eventos
   est.btn_guardar.click(async function() {
     await validar_campos();
@@ -29,28 +28,12 @@
   est.btn_actualizar.click(async function() {
     await actualizar_estudiante();
   });
-  est.btn_eliminar.click(async function(){
-    const id_estudiante = localStorage.getItem(`id`);
-    if (id_estudiante) {
-      borrado = await borrar_estudiante(id_estudiante);
-      if (borrado === 1) {
-        Swal.fire({
-          icon              : `success`,
-          title             : `Eliminado`,
-          text              : `Estudiante eliminado correctamente`,
-          confirmButtonText : `Entendido`
-        }).then(async function() {
-          await inicializar_modulo_estudiantes();
-        });
-      }
-    }
-    else
-      console.error(`No se ha encontrado un ID de estudiante en localStorage.`);
-  });
-  inicializar_modulo_estudiantes(); //Inicia el módulos
-//Inicio Funciones
+  inicializar_modulo_estudiantes(); //Inicia el módulo
+// Inicio Funciones
+  /**
+   * Funcíón encargada de limpiar los elementos del formulario
+   */
   async function limpiar_formulario() {
-    // Limpia los campos de texto
       est.identificacion.val(``);
       est.nombre.val(``);
       est.fecha_nace.val(``);
@@ -64,11 +47,13 @@
    *
    */
   async function inicializar_modulo_estudiantes() {
-    const estudiantes     = await listar_estudiantes();
+    const estudiantes = await listar_estudiantes();
     await template_estudiantes(estudiantes);
   }
   /**
-   * Función que valida los campos del formulario
+   * Función encargada de validar los campos del formulario
+   *
+   * @return     Boolean  Bandera utilizada para detectar el estado de los campos
    */
   async function validar_campos() {
     let camposValidos = true;
@@ -88,11 +73,16 @@
           guardado = await guardar_estudiante();
           if (guardado === 1) {
             Swal.fire({
-              icon              : `success`,
-              title             : `Exito`,
-              text              : `Estudiante agregado de manera satisfactoria`,
-              confirmButtonText : `Entendido`
-            });
+              icon: 'success',
+              title: 'Éxito',
+              text: 'Estudiante agregado de manera satisfactoria',
+              confirmButtonText: 'Entendido'
+            }).then(async (guardado) => {
+                if (guardado.isConfirmed) {
+                  await inicializar_modulo_estudiantes();
+                  await limpiar_formulario();
+                }
+              });
           }
           else {
             Swal.fire({
@@ -106,15 +96,10 @@
       return camposValidos;
   }
   /**
-   * Confirmación de la información para eliminar un estudiante
+   * Función encargada de asignar los valores a todos los campo de la modal de edición
    *
-   * @param     Integer  id                 Identificador del estudiante
-   * @param     String   nombre_estudiante  El nombre del estudiante
+   * @param      Object   datos   Datos del estudiante
    */
-  async function confirmar_eliminar_estudiante(id, nombre_estudiante) {
-    document.getElementById(`mensajeEliminar`).innerHTML = `¿Seguro de eliminar al estudiante? ${nombre_estudiante}`;
-    localStorage.id = id;
-  }
   async function asignar_valores(datos) {
     est.identificacion_editar.val(datos[0].Identificacion);
     est.nombre_editar.val(datos[0].Nombre_Completo)
