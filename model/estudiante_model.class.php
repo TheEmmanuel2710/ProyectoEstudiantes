@@ -2,20 +2,20 @@
   namespace Modelo;
   use PDO;
   use PDOException;
-  //Inclusión de la base de datos
-  include_once 'conexion_model.class.php';
-  //Creación de la clase
-  class Estudiante {
-    //Campos de la tabla
-    private $id;
-    private $identificacion;
-    private $nombreCompleto;
-    private $fechaNacimiento;
-    private $ciudadNacimiento;
-    private $departamentoNacimiento;
-    private $edad;
-    //Variable para almacenar el objeto de conexion
-    public $con;
+  // Inclusión de la base de datos
+    include_once 'conexion_model.class.php';
+  // Creación de la clase
+    class Estudiante {
+    // Atributos de la clase
+      private $id;
+      private $identificacion;
+      private $nombreCompleto;
+      private $fechaNacimiento;
+      private $ciudadNacimiento;
+      private $departamentoNacimiento;
+      private $edad;
+    // Variable para almacenar el objeto de conexion
+      public $con;
     /**
      * Gestiona la conexion a base de datos
      */
@@ -53,17 +53,18 @@
                 :edad
               )";
       $stmt = $this->con->getCon()->prepare($sql);
-      $stmt->bindParam(':identificacion', $this->identificacion, PDO::PARAM_INT);
-      $stmt->bindParam(':nombreCompleto', $this->nombreCompleto, PDO::PARAM_STR);
-      $stmt->bindParam(':fechaNacimiento', $this->fechaNacimiento, PDO::PARAM_STR);
-      $stmt->bindParam(':ciudadNacimiento', $this->ciudadNacimiento, PDO::PARAM_STR);
+      $stmt->bindParam(':identificacion'        , $this->identificacion        , PDO::PARAM_INT);
+      $stmt->bindParam(':nombreCompleto'        , $this->nombreCompleto        , PDO::PARAM_STR);
+      $stmt->bindParam(':fechaNacimiento'       , $this->fechaNacimiento       , PDO::PARAM_STR);
+      $stmt->bindParam(':ciudadNacimiento'      , $this->ciudadNacimiento      , PDO::PARAM_STR);
       $stmt->bindParam(':departamentoNacimiento', $this->departamentoNacimiento, PDO::PARAM_STR);
-      $stmt->bindParam(':edad', $this->edad, PDO::PARAM_INT);
+      $stmt->bindParam(':edad'                  , $this->edad                  , PDO::PARAM_INT);
       try {
         $stmt->execute();
         $mensaje = "Estudiante agregado";
         return 1;
-      } catch (PDOException $e) {
+      }
+      catch (PDOException $e) {
         $mensaje = "Error al crear estudiante: {$e->getMessage()}";
         return 0;
       }
@@ -95,9 +96,9 @@
         while ($rows = $stmt->fetchAll(PDO::FETCH_ASSOC))
           $datos = $rows;
         $stmt = null;
-      } catch (PDOException $e) {
-        $error   = $e->getMessage();
-        $mensaje = "Error al consultar estudiantes: $error";
+      }
+      catch (PDOException $e) {
+        $mensaje = "Error al consultar estudiantes: {$e->getMessage()}";
         return $mensaje;
       }
       return $datos;
@@ -130,9 +131,9 @@
         while ($rows = $stmt->fetchAll(PDO::FETCH_ASSOC))
           $datos = $rows;
         $stmt = null;
-      } catch (PDOException $e) {
-        $error   = $e->getMessage();
-        $mensaje = "Error al consultar estudiante: $error";
+      }
+      catch (PDOException $e) {
+        $mensaje = "Error al consultar estudiante: {$e->getMessage()}";
         return $mensaje;
       }
       return $datos;
@@ -142,7 +143,13 @@
      *
      * @return     string  Mensaje de éxito o error.
      */
-    public function editar_estudiante() {
+    public function editar_estudiante($formulario_edicion, $id_estudiante) {
+      $this->identificacion         = $formulario_edicion['txtIdentificacionEditar'];
+      $this->nombreCompleto         = $formulario_edicion['txtNombreEditar'];
+      $this->fechaNacimiento        = $formulario_edicion['txtFechaNacimientoEditar'];
+      $this->ciudadNacimiento       = $formulario_edicion['txtCiudadNEditar'];
+      $this->departamentoNacimiento = $formulario_edicion['txtDepartamentoNEditar'];
+      $this->edad                   = $formulario_edicion['txtEdadEditar'];
       $sql = "UPDATE
                 estudiante
               SET
@@ -161,14 +168,15 @@
       $stmt->bindParam(':ciudadNacimiento'      , $this->ciudadNacimiento      , PDO::PARAM_STR);
       $stmt->bindParam(':departamentoNacimiento', $this->departamentoNacimiento, PDO::PARAM_STR);
       $stmt->bindParam(':edad'                  , $this->edad                  , PDO::PARAM_INT);
-      $stmt->bindParam(':id'                    , $this->id                    , PDO::PARAM_INT);
+      $stmt->bindParam(':id'                    , $id_estudiante               , PDO::PARAM_INT);
       try {
         $stmt->execute();
-        return "Estudiante actualizado";
-      } catch (PDOException $e) {
-        $error   = $e->getMessage();
-        $mensaje = "Error al actualizar el estudiante: $error";
-        return $mensaje;
+        $mensaje = 'Estudiante actualizado';
+        return 1;
+      }
+      catch (PDOException $e) {
+        $mensaje = "Error al actualizar el estudiante: {$e->getMessage()}";
+        return 0;
       }
     }
     /**
@@ -188,9 +196,9 @@
         $stmt->execute();
         $mensaje = "Estudiante eliminado";
         return 1;
-      } catch (PDOException $e) {
-        $error   = $e->getMessage();
-        $mensaje = "Error al eliminar el estudiante: $error";
+      }
+      catch (PDOException $e) {
+        $mensaje = "Error al eliminar el estudiante: {$e->getMessage()}";
         return 0;
       }
       return $stmt;
@@ -225,5 +233,5 @@
       $stmt->execute();
       return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-  }
+    }
 ?>

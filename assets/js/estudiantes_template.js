@@ -32,6 +32,7 @@ async function template_estudiantes(estudiantes) {
 // Delegar eventos a los botones generados dinámicamente
   $(document).on(`click`, `.btn-consultar`, async function() {
     const id_estudiante = $(this).data(`id`);
+    localStorage.setItem('id_estudiante', id_estudiante);
     let datos = await consultar_estudiante(id_estudiante);
     await asignar_valores(datos);
   });

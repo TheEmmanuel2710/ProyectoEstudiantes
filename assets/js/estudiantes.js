@@ -8,7 +8,7 @@
   est.departamento   = $(`#txtDepartamentoN`);
   est.edad           = $(`#txtEdad`);
 // Datos Actualizar
-  est.identificacion_editar = $(`#txtIndentificacionEditar`);
+  est.identificacion_editar = $(`#txtIdentificacionEditar`);
   est.nombre_editar         = $(`#txtNombreEditar`);
   est.fecha_nace_editar     = $(`#txtFechaNacimientoEditar`);
   est.ciudad_editar         = $(`#txtCiudadNEditar`);
@@ -26,7 +26,7 @@
     await limpiar_formulario();
   });
   est.btn_actualizar.click(async function() {
-    await actualizar_estudiante();
+    validar_campos_edicion();
   });
   inicializar_modulo_estudiantes(); //Inicia el módulo
 // Inicio Funciones
@@ -60,7 +60,7 @@
     // Validar campos obligatorios
       if (est.identificacion.val() === `` || est.nombre.val() === `` || est.fecha_nace.val() === `` || est.edad.val() === `` || est.ciudad.prop(`selectedIndex`) === 0 || est.departamento.prop(`selectedIndex`) === 0)
         camposValidos = false;
-      // Mostrar Sweet Alert   
+      // Mostrar Sweet Alert
         if (!camposValidos) {
           Swal.fire({
             icon              : `info`,
@@ -94,6 +94,50 @@
           }
         }
       return camposValidos;
+  }
+  /**
+   * Función encargada de validar los campos del formulario
+   *
+   * @return     Boolean  Bandera utilizada para detectar el estado de los campos
+   */
+  async function validar_campos_edicion() {
+    let camposValidos_editar = true;
+    // Validar campos obligatorios
+      if (est.identificacion_editar.val() === `` || est.nombre_editar.val() === `` || est.fecha_nace_editar.val() === `` || est.edad_editar.val() === `` || est.ciudad_editar.prop(`selectedIndex`) === 0 || est.departamento_editar.prop(`selectedIndex`) === 0)
+        camposValidos_editar = false;
+      // Mostrar Sweet Alert
+        if (!camposValidos_editar) {
+          Swal.fire({
+            icon              : `info`,
+            title             : `Revisar`,
+            text              : `Por favor completa todos los campos obligatorios`,
+            confirmButtonText : `Entendido`
+          });
+        }
+        else if (camposValidos_editar) {
+          let id_estudiante_guardado = localStorage.getItem(`id_estudiante`);
+          actualizado = await actualizar_estudiante(id_estudiante_guardado);
+          if (actualizado === 1) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Éxito',
+              text: 'Estudiante actualizado de manera satisfactoria',
+              confirmButtonText: 'Entendido'
+            }).then(async (actualizado) => {
+                if (actualizado.isConfirmed)
+                  await inicializar_modulo_estudiantes();
+              });
+          }
+          else {
+            Swal.fire({
+              icon              : `error`,
+              title             : `Error`,
+              text              : `Ha ocurrido un error al actualizar al estudiante`,
+              confirmButtonText : `Entendido`
+            });
+          }
+        }
+      return camposValidos_editar;
   }
   /**
    * Función encargada de asignar los valores a todos los campo de la modal de edición

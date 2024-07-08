@@ -15,5 +15,9 @@
       parse_str($_POST['formulario'], $formulario);
       echo json_encode($estudiante_model->guardar_estudiante($formulario));
     break;
+    case 'actualizar_estudiante':
+      parse_str($_POST['formulario_edicion'], $formulario_edicion);
+      echo json_encode($estudiante_model->editar_estudiante($formulario_edicion, $_POST['id_estudiante']));
+    break;
   }
 ?>
