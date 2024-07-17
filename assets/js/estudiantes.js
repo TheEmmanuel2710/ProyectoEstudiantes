@@ -1,154 +1,163 @@
-//Objeto principal
-  let est = {};
-// Datos Generales
-  est.identificacion = $(`#txtIdentificacion`);
-  est.nombre         = $(`#txtNombreC`);
-  est.fecha_nace     = $(`#txtFechaNacimiento`);
-  est.ciudad         = $(`#txtCiudadN`);
-  est.departamento   = $(`#txtDepartamentoN`);
-  est.edad           = $(`#txtEdad`);
-// Datos Actualizar
-  est.identificacion_editar = $(`#txtIdentificacionEditar`);
-  est.nombre_editar         = $(`#txtNombreEditar`);
-  est.fecha_nace_editar     = $(`#txtFechaNacimientoEditar`);
-  est.ciudad_editar         = $(`#txtCiudadNEditar`);
-  est.departamento_editar   = $(`#txtDepartamentoNEditar`);
-  est.edad_editar           = $(`#txtEdadEditar`);
-// Botones
-  est.btn_guardar    = $(`#btn-Guardar`);
-  est.btn_cancelar   = $(`#btn-Cancelar`);
-  est.btn_actualizar = $(`#btn-Actualizar`);
-// Eventos
-  est.btn_guardar.click(async function() {
-    await validar_campos();
-  });
-  est.btn_cancelar.click(async function() {
-    await limpiar_formulario();
-  });
-  est.btn_actualizar.click(async function() {
-    validar_campos_edicion();
-  });
-  inicializar_modulo_estudiantes(); //Inicia el módulo
-// Inicio Funciones
+/**
+ * Clase general del módullo donde se realizan las funciones generales
+ */
+class estudiantes_module {
   /**
-   * Funcíón encargada de limpiar los elementos del formulario
+   * Constructor de la clase
    */
-  async function limpiar_formulario() {
-      est.identificacion.val(``);
-      est.nombre.val(``);
-      est.fecha_nace.val(``);
-      est.edad.val(``);
-    // Limpia los campos select
-      est.ciudad.prop(`selectedIndex`, 0);
-      est.departamento.prop(`selectedIndex`, 0);
+  constructor() {
+    this.est = {
+      identificacion        : $(`#txtIdentificacion`),
+      nombre                : $(`#txtNombreC`),
+      fecha_nace            : $(`#txtFechaNacimiento`),
+      ciudad                : $(`#txtCiudadN`),
+      departamento          : $(`#txtDepartamentoN`),
+      edad                  : $(`#txtEdad`),
+      identificacion_editar : $(`#txtIdentificacionEditar`),
+      nombre_editar         : $(`#txtNombreEditar`),
+      fecha_nace_editar     : $(`#txtFechaNacimientoEditar`),
+      ciudad_editar         : $(`#txtCiudadNEditar`),
+      departamento_editar   : $(`#txtDepartamentoNEditar`),
+      edad_editar           : $(`#txtEdadEditar`),
+      btn_guardar           : $(`#btn-Guardar`),
+      btn_cancelar          : $(`#btn-Cancelar`),
+      btn_actualizar        : $(`#btn-Actualizar`)
+    };
+    this.initEvents();
+    this.inicializarModuloEstudiantes();
+  }
+  /**
+   * Inicializa los eventos
+   */
+  initEvents() {
+    this.est.btn_guardar.click(async () => {
+      await this.validarCampos();
+    });
+    this.est.btn_cancelar.click(async () => {
+      await this.limpiarFormulario();
+    });
+    this.est.btn_actualizar.click(async () => {
+      await this.validarCamposEdicion();
+    });
+  }
+  /**
+   * Función encargada de limpiar los campos del formulario
+   */
+  async limpiarFormulario() {
+    this.est.identificacion.val(``);
+    this.est.nombre.val(``);
+    this.est.fecha_nace.val(``);
+    this.est.edad.val(``);
+    this.est.ciudad.prop(`selectedIndex`, 0);
+    this.est.departamento.prop(`selectedIndex`, 0);
   }
   /**
    * Función que inicializa el módulo
-   *
    */
-  async function inicializar_modulo_estudiantes() {
-    const estudiantes = await listar_estudiantes();
-    await template_estudiantes(estudiantes);
+  async inicializarModuloEstudiantes() {
+    const estudiantes = await estudiantes_peticiones.listarEstudiantes();
+    await estudiantes_template.template_estudiantes(estudiantes);
   }
   /**
    * Función encargada de validar los campos del formulario
    *
-   * @return     Boolean  Bandera utilizada para detectar el estado de los campos
+   * @return     Bool  Estado de los campos del formulario
    */
-  async function validar_campos() {
+  async validarCampos() {
     let camposValidos = true;
-    // Validar campos obligatorios
-      if (est.identificacion.val() === `` || est.nombre.val() === `` || est.fecha_nace.val() === `` || est.edad.val() === `` || est.ciudad.prop(`selectedIndex`) === 0 || est.departamento.prop(`selectedIndex`) === 0)
-        camposValidos = false;
-      // Mostrar Sweet Alert
-        if (!camposValidos) {
-          Swal.fire({
-            icon              : `info`,
-            title             : `Revisar`,
-            text              : `Por favor completa todos los campos obligatorios`,
-            confirmButtonText : `Entendido`
-          });
-        }
-        else if (camposValidos) {
-          guardado = await guardar_estudiante();
-          if (guardado === 1) {
-            Swal.fire({
-              icon: 'success',
-              title: 'Éxito',
-              text: 'Estudiante agregado de manera satisfactoria',
-              confirmButtonText: 'Entendido'
-            }).then(async (guardado) => {
-                if (guardado.isConfirmed) {
-                  await inicializar_modulo_estudiantes();
-                  await limpiar_formulario();
-                }
-              });
+    if (this.est.identificacion.val() === `` || this.est.nombre.val() === `` || this.est.fecha_nace.val() === `` || this.est.edad.val() === `` || this.est.ciudad.prop(`selectedIndex`) === 0 || this.est.departamento.prop(`selectedIndex`) === 0)
+      camposValidos = false;
+    if (!camposValidos) {
+      Swal.fire({
+        icon              : `info`,
+        title             : `Revisar`,
+        text              : `Por favor completa todos los campos obligatorios`,
+        confirmButtonText : `Entendido`
+      });
+    }
+    else {
+      const guardado = await estudiantes_peticiones.guardarEstudiante();
+      if (guardado === 1) {
+        Swal.fire({
+          icon              : `success`,
+          title             : `Éxito`,
+          text              : `Estudiante agregado de manera satisfactoria`,
+          confirmButtonText : `Entendido`
+        }).then(async (guardado) => {
+          if (guardado.isConfirmed) {
+            await this.inicializarModuloEstudiantes();
+            await this.limpiarFormulario();
           }
-          else {
-            Swal.fire({
-              icon              : `error`,
-              title             : `Error`,
-              text              : `Ha ocurrido un error al agregar al estudiante`,
-              confirmButtonText : `Entendido`
-            });
-          }
-        }
-      return camposValidos;
+        });
+      }
+      else {
+        Swal.fire({
+          icon              : `error`,
+          title             : `Error`,
+          text              : `Ha ocurrido un error al agregar al estudiante`,
+          confirmButtonText : `Entendido`
+        });
+      }
+    }
+    return camposValidos;
   }
   /**
-   * Función encargada de validar los campos del formulario
+   * Función encargada de validar los campos de la modal
    *
-   * @return     Boolean  Bandera utilizada para detectar el estado de los campos
+   * @return     Bool  Estado de los campos de la modal
    */
-  async function validar_campos_edicion() {
-    let camposValidos_editar = true;
-    // Validar campos obligatorios
-      if (est.identificacion_editar.val() === `` || est.nombre_editar.val() === `` || est.fecha_nace_editar.val() === `` || est.edad_editar.val() === `` || est.ciudad_editar.prop(`selectedIndex`) === 0 || est.departamento_editar.prop(`selectedIndex`) === 0)
-        camposValidos_editar = false;
-      // Mostrar Sweet Alert
-        if (!camposValidos_editar) {
-          Swal.fire({
-            icon              : `info`,
-            title             : `Revisar`,
-            text              : `Por favor completa todos los campos obligatorios`,
-            confirmButtonText : `Entendido`
-          });
-        }
-        else if (camposValidos_editar) {
-          let id_estudiante_guardado = localStorage.getItem(`id_estudiante`);
-          actualizado = await actualizar_estudiante(id_estudiante_guardado);
-          if (actualizado === 1) {
-            Swal.fire({
-              icon: 'success',
-              title: 'Éxito',
-              text: 'Estudiante actualizado de manera satisfactoria',
-              confirmButtonText: 'Entendido'
-            }).then(async (actualizado) => {
-                if (actualizado.isConfirmed)
-                  await inicializar_modulo_estudiantes();
-              });
-          }
-          else {
-            Swal.fire({
-              icon              : `error`,
-              title             : `Error`,
-              text              : `Ha ocurrido un error al actualizar al estudiante`,
-              confirmButtonText : `Entendido`
-            });
-          }
-        }
-      return camposValidos_editar;
+  async validarCamposEdicion() {
+    let camposValidos = true;
+    if (this.est.identificacion_editar.val() === `` || this.est.nombre_editar.val() === `` || this.est.fecha_nace_editar.val() === `` || this.est.edad_editar.val() === `` || this.est.ciudad_editar.prop(`selectedIndex`) === 0 || this.est.departamento_editar.prop(`selectedIndex`) === 0)
+      camposValidos = false;
+    if (!camposValidos) {
+      Swal.fire({
+        icon              : `info`,
+        title             : `Revisar`,
+        text              : `Por favor completa todos los campos obligatorios`,
+        confirmButtonText : `Entendido`
+      });
+    }
+    else {
+      let id_estudiante_guardado = localStorage.getItem(`id_estudiante`);
+      const actualizado          = await estudiantes_peticiones.actualizarEstudiante(id_estudiante_guardado);
+      if (actualizado === 1) {
+        Swal.fire({
+          icon              : `success`,
+          title             : `Éxito`,
+          text              : `Estudiante actualizado de manera satisfactoria`,
+          confirmButtonText : `Entendido`
+        }).then(async (actualizado) => {
+          if (actualizado.isConfirmed)
+            await this.inicializarModuloEstudiantes();
+        });
+      }
+      else {
+        Swal.fire({
+          icon              : `error`,
+          title             : `Error`,
+          text              : `Ha ocurrido un error al actualizar al estudiante`,
+          confirmButtonText : `Entendido`
+        });
+      }
+    }
+    return camposValidos;
   }
   /**
-   * Función encargada de asignar los valores a todos los campo de la modal de edición
+   * Función encargada de asignar los valores a los campos de la modal
    *
    * @param      Object   datos   Datos del estudiante
    */
-  async function asignar_valores(datos) {
-    est.identificacion_editar.val(datos[0].Identificacion);
-    est.nombre_editar.val(datos[0].Nombre_Completo)
-    est.fecha_nace_editar.val(datos[0].Fecha_Nacimiento)
-    est.ciudad_editar.val(datos[0].Ciudad_Nacimiento)
-    est.departamento_editar.val(datos[0].Departamento_Nacimiento)
-    est.edad_editar.val(datos[0].Edad)
+  async asignarValores(datos) {
+    this.est.identificacion_editar.val(datos[0].Identificacion);
+    this.est.nombre_editar.val(datos[0].Nombre_Completo);
+    this.est.fecha_nace_editar.val(datos[0].Fecha_Nacimiento);
+    this.est.ciudad_editar.val(datos[0].Ciudad_Nacimiento);
+    this.est.departamento_editar.val(datos[0].Departamento_Nacimiento);
+    this.est.edad_editar.val(datos[0].Edad);
   }
+}
+// Instancia de la clase
+  $(document).ready(() => {
+    new estudiantes_module();
+  });
