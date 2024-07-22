@@ -11,7 +11,7 @@ class estudiantes_peticiones {
     const response = await $.ajax({
       url      : `../controller/estudiantes_controller.php`,
       type     : `POST`,
-      data     : {action :`listar_estudiantes`},
+      data     : {action : `listar_estudiantes`},
       dataType : `json`
     });
     return response;

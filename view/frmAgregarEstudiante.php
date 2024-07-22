@@ -92,7 +92,6 @@
           </div>
           <div class="modal-body">
             <form id="frm_estudiantes_editar" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
-              <label for="" class="">Edición de información del estudiante:</label><br>
               <div class="form-floating mb-3">
                 <input type="number" class="form-control" id="txtIdentificacionEditar" name="txtIdentificacionEditar" placeholder="Digite la identificación del estudiante">
                 <label for="txtIdentificacionEditar">Identificación del estudiante</label>
@@ -106,7 +105,6 @@
                 <label for="txtFechaNacimientoEditar">Fecha de Nacimiento</label>
               </div>
               <div class="form-floating mb-3">
-                <label for="txtCiudadNEditar">Ciudad Nacimiento:</label>
                 <select name="txtCiudadNEditar" id="txtCiudadNEditar" class="form-control" required>
                   <option value="">Seleccione una ciudad</option>
                   <?php
@@ -119,9 +117,9 @@
                     echo "<option value='{$ciudad['id']}'>{$ciudad['Nombre_Ciudad']}</option>";
                   ?>
                 </select>
+                <label for="txtCiudadNEditar">Ciudad Nacimiento</label>
               </div>
               <div class="form-floating mb-3">
-                <label for="txtDepartamentoNEditar">Departamento Nacimiento:</label>
                 <select name="txtDepartamentoNEditar" id="txtDepartamentoNEditar" class="form-control" required>
                   <option value="">Seleccione un departamento</option>
                   <?php
@@ -134,13 +132,15 @@
                     echo "<option value='{$ciudad['id']}'>{$ciudad['Nombre_Departamento']}</option>";
                   ?>
                 </select>
+                <label for="txtDepartamentoNEditar">Departamento Nacimiento</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="txtEdadEditar" name="txtEdadEditar" placeholder="Digite el nombre del estudiante">
+                <input type="number" class="form-control" id="txtEdadEditar" name="txtEdadEditar" placeholder="Digite la edad del estudiante">
                 <label for="txtEdadEditar">Edad</label>
               </div>
             </form>
           </div>
+
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             <button type="button" id="btn-Actualizar" class="btn btn-primary">Editar</button>
